@@ -30,6 +30,12 @@ describe('PigLatin.js', () => {
         const result = englishToPigLatin(word);
         assert.equal(result, word);
       });
+
+      it('returns unchanged string when word contains non-alphanumeric character', () => {
+        const word = '.word';
+        const result = englishToPigLatin(word);
+        assert.equal(result, word);
+      });
     });
 
     describe('VALID cases', () => {

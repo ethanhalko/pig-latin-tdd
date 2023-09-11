@@ -7,7 +7,7 @@ function getMultigraph(word) {
     return triGraph;
   }
 
-  return MULTIGRAPHS.find((chars) => word.slice(0, 2).toLowerCase() === chars);
+  return MULTIGRAPHS.find((chars) => word.slice(0, 2).toLowerCase() === chars) || '';
 }
 
 function getFirstChar(charArray, startsWithVowel, multigraph) {
@@ -18,24 +18,22 @@ function getFirstChar(charArray, startsWithVowel, multigraph) {
   return charArray[0];
 }
 
-function convert(currentWord) {
-  const startsWithVowel = VOWELS.includes(currentWord[0].toLowerCase());
-  const multigraph = getMultigraph(currentWord);
-  const converted = [...currentWord.split('')];
-
-  const firstChar = getFirstChar(converted, startsWithVowel, multigraph);
+function doConversion(word) {
+  const convertedWord = word.split('');
+  const multigraph = getMultigraph(word);
+  const startsWithVowel = VOWELS.includes(convertedWord[0].toLowerCase());
+  const firstChar = getFirstChar(convertedWord, startsWithVowel, multigraph);
 
   if(!startsWithVowel) {
-    const prefix = multigraph ? converted.splice(0, multigraph.length).join('').toLowerCase() : firstChar.toLowerCase();
+    const prefix = multigraph ? convertedWord.splice(0, multigraph.length).join('').toLowerCase() : firstChar.toLowerCase();
+    convertedWord.push(prefix);
 
-    converted.push(prefix);
+    if(firstChar === firstChar.toUpperCase()) {
+      convertedWord[0] = convertedWord[0]?.toUpperCase();
+    }
   }
 
-  if(firstChar === firstChar.toUpperCase()) {
-    converted[0] = converted[0]?.toUpperCase();
-  }
-
-  return converted;
+  return convertedWord;
 }
 
 export function englishToPigLatin(word) {
@@ -44,11 +42,11 @@ export function englishToPigLatin(word) {
     return '';
   }
 
-  if(parseInt(currentWord)) {
+  if(parseInt(currentWord) || /[^a-zA-Z0-9]/.test(currentWord)) {
     return currentWord;
   }
 
-  const converted= convert(currentWord);
+  const converted = doConversion(currentWord);
 
   return [...converted, 'ay'].join('');
 }
