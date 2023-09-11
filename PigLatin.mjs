@@ -1,5 +1,5 @@
-const VOWELS = ['a', 'e', 'i' ,'o' ,'u'];
-const MULTIGRAPHS = ['ps', 'ch', 'qu','sch', 'thr', 'th'];
+const VOWELS = ['a','e','i','o','u'];
+const MULTIGRAPHS = ['ps', 'ch', 'qu', 'sch', 'thr', 'th'];
 
 function getMultigraph(word) {
   const triGraph = MULTIGRAPHS.find((chars) => word.slice(0, 3).toLowerCase() === chars);
